@@ -19,9 +19,8 @@ var isValid = (s) => {
     return true;
     else return false;
   };
-
-
-console.log(isValid('{[{}]'));
+  var result=(isValid('[{}]'));
+  console.log(result);
 
 
 
