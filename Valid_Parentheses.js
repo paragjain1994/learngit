@@ -1,6 +1,5 @@
 var isValid = (s) => {
     var stack = [];
-    
     for (let i = 0; i < s.length; i++) {
     var top = stack[stack.length - 1];    //here length of stack array is dynamically changed according to need
       if (s[i] === '(' || s[i] === '{' || s[i] === '[') {
