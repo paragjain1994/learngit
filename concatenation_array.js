@@ -9,16 +9,6 @@ var getConcatenation = function(nums) {
     return ans;
 };
 
-
-
-
-
-
-
-
-
-
-
 var nums=[1,4,6,];
 var ans=getConcatenation(nums);
 console.log(ans);
