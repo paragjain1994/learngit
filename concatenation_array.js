@@ -9,6 +9,12 @@ var getConcatenation = function(nums) {
     return ans;
 };
 
+var sumofArrayElement = function(arr) {
+ return arr.reduce((acc, e) => acc + e)
+}
+
 var nums=[1,4,6,];
+var sum = sumofArrayElement(nums)
 var ans=getConcatenation(nums);
 console.log(ans);
+console.log(sum);
