@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section class="container">
+        <form id="my-form" action="#" onsubmit="saveData(event)">
+            <h1>Expense Tracker</h1>
+            <div>
+                <label for="amount">Choose Expense Amount:</label>
+                <input type="number" id="amount" name="amount">
+            </div>
+            <br>
+            <div>
+                <label for="description">Choose Description:</label>
+                <input type="text" id="description" name="description">
+            </div>
+            <br>
+            <div>
+                <label for="category">Choose a Category:</label>
+                <select name="category" id="category">
+                    <option value="food">Food</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="movie">Movie</option>
+                    <option value="fuel">Fuel</option>
+                    <option value="rent">Rent</option>
+                    <option value="health">Health</option>
+                    <option value="education">Education</option>
+                </select>
+            </div>
+            <br>
+            <input class="btn" type="submit" name="addExpense" value="Add Expense">
+        </form>
+        <div>
+            <ul id="ListOfUserExpense">
+
+            </ul>
+        </div>
+
+    </section>
+    <script>
+
+        var UnList = document.getElementById('ListOfUserExpense');
+        var dltBtn = document.getElementsByClassName("del");
+        var edt = document.getElementsByClassName("ed");
+        document.addEventListener('click', removeItem);
+       
+            function saveData(event) {
+            event.preventDefault();
+
+
+            var obj = {};
+            obj.amount = event.target.amount.value;
+            obj.description = event.target.description.value;
+            obj.category = event.target.category.value;
+
+            let unique_Id_array = Object.keys(localStorage);
+
+            checkduplicacy(obj, unique_Id_array);
+
+        };
+
+
+
+        function checkduplicacy(temp, keyy) {
+            //edge case 
+            if (keyy.some((v) => { return v === temp.category })) {
+                alert("this expense category is already in the list");
+            }
+            else {
+
+                localStorage.setItem(temp.category, JSON.stringify(temp));
+
+
+                showDetailsOnScreen(temp);
+            }
+        };
+
+
+        function showDetailsOnScreen(user) {
+
+
+            var parentNode = document.getElementById("ListOfUserExpense");
+            //console.log(parentNode);
+            var Child_printDetails = `<li id="${user.category}">Choose Expense Amount::- ${user.amount} &nbsp;&nbsp; Choose Description:- ${user.description} &nbsp;&nbsp; Choose a Category:- ${user.category}&nbsp;<button class="ed">Edit</button>&nbsp;<button class="del">Delete</button></li>`;
+            parentNode.innerHTML = parentNode.innerHTML + Child_printDetails;
+
+        };
+
+
+
+        function removeItem(event) {
+
+            var list_ = event.target.parentElement;
+            var list_id = event.target.parentElement.id;
+            //console.log(id)
+            UnList.removeChild(list_);
+            if (event.target.classList.contains("del")) {
+                let unique_Id_array1 = Object.keys(localStorage);
+                if (unique_Id_array1.some((v) => { return v === list_id })) {
+                    alert("delete expense details parmanently?");
+                    // console.log(localStorage)
+                    // localStorage.clear();
+                    for (var i = 0; i < unique_Id_array1.length; i++) {
+                        if (unique_Id_array1[i] === list_id)
+                            localStorage.removeItem(unique_Id_array1[i]);
+                    }
+                }
+            }
+            else if (event.target.classList.contains("ed")) {
+                let unique_Id_array1 = Object.keys(localStorage);
+
+                //console.log(unique_Id_array1);
+                if (unique_Id_array1.some((v) => { return v === list_id })) {
+                    alert("Edit expense details?");
+            
+                    for (var i = 0; i < unique_Id_array1.length; i++) {
+                        if (unique_Id_array1[i] === list_id)
+                            localStorage.removeItem(unique_Id_array1[i]);
+                    }
+                }
+                document.getElementById("amount").focus();
+            }
+        };
+
+
+       
+
+
+
+    </script>
+</body>
+
+</html>
