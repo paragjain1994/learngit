@@ -50,8 +50,8 @@
         var dltBtn = document.getElementsByClassName("del");
         var edt = document.getElementsByClassName("ed");
         document.addEventListener('click', removeItem);
-       
-            function saveData(event) {
+
+        function saveData(event) {
             event.preventDefault();
 
 
@@ -65,10 +65,11 @@
             checkduplicacy(obj, unique_Id_array);
 
         };
-            function checkduplicacy(temp, keyy) {
+
+        function checkduplicacy(temp, keyy) {
             //edge case 
             if (keyy.some((v) => { return v === temp.category })) {
-                alert("this expense category is already in the list");
+                alert(`Expense Category ${temp.category} is  already in the list`);
             }
             else {
 
@@ -78,14 +79,29 @@
                 showDetailsOnScreen(temp);
             }
         };
-            function showDetailsOnScreen(user) {
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const localStorageObj = localStorage;
+            const localstoragekeys = Object.keys(localStorageObj)
+
+            for (var i = 0; i < localstoragekeys.length; i++) {
+                const key = localstoragekeys[i]
+                const userDetailsString = localStorageObj[key];
+                const userDetailsObj = JSON.parse(userDetailsString);
+                showDetailsOnScreen(userDetailsObj);
+            }
+        });
+
+        function showDetailsOnScreen(user) {
             var parentNode = document.getElementById("ListOfUserExpense");
             //console.log(parentNode);
             var Child_printDetails = `<li id="${user.category}">Choose Expense Amount::- ${user.amount} &nbsp;&nbsp; Choose Description:- ${user.description} &nbsp;&nbsp; Choose a Category:- ${user.category}&nbsp;<button class="ed">Edit</button>&nbsp;<button class="del">Delete</button></li>`;
             parentNode.innerHTML = parentNode.innerHTML + Child_printDetails;
 
         };
+
         function removeItem(event) {
+
             var list_ = event.target.parentElement;
             var list_id = event.target.parentElement.id;
             //console.log(id)
@@ -93,7 +109,7 @@
             if (event.target.classList.contains("del")) {
                 let unique_Id_array1 = Object.keys(localStorage);
                 if (unique_Id_array1.some((v) => { return v === list_id })) {
-                    alert("delete expense details parmanently?");
+                    confirm("delete expense details parmanently?");
                     // console.log(localStorage)
                     // localStorage.clear();
                     for (var i = 0; i < unique_Id_array1.length; i++) {
@@ -107,8 +123,8 @@
 
                 //console.log(unique_Id_array1);
                 if (unique_Id_array1.some((v) => { return v === list_id })) {
-                    alert("Edit expense details?");
-            
+                    confirm("Edit expense details?");
+
                     for (var i = 0; i < unique_Id_array1.length; i++) {
                         if (unique_Id_array1[i] === list_id)
                             localStorage.removeItem(unique_Id_array1[i]);
@@ -117,6 +133,8 @@
                 document.getElementById("amount").focus();
             }
         };
- </script>
+
+    </script>
 </body>
+
 </html>
