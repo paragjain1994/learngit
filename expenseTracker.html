@@ -65,10 +65,7 @@
             checkduplicacy(obj, unique_Id_array);
 
         };
-
-
-
-        function checkduplicacy(temp, keyy) {
+            function checkduplicacy(temp, keyy) {
             //edge case 
             if (keyy.some((v) => { return v === temp.category })) {
                 alert("this expense category is already in the list");
@@ -81,22 +78,14 @@
                 showDetailsOnScreen(temp);
             }
         };
-
-
-        function showDetailsOnScreen(user) {
-
-
+            function showDetailsOnScreen(user) {
             var parentNode = document.getElementById("ListOfUserExpense");
             //console.log(parentNode);
             var Child_printDetails = `<li id="${user.category}">Choose Expense Amount::- ${user.amount} &nbsp;&nbsp; Choose Description:- ${user.description} &nbsp;&nbsp; Choose a Category:- ${user.category}&nbsp;<button class="ed">Edit</button>&nbsp;<button class="del">Delete</button></li>`;
             parentNode.innerHTML = parentNode.innerHTML + Child_printDetails;
 
         };
-
-
-
         function removeItem(event) {
-
             var list_ = event.target.parentElement;
             var list_id = event.target.parentElement.id;
             //console.log(id)
@@ -128,13 +117,6 @@
                 document.getElementById("amount").focus();
             }
         };
-
-
-       
-
-
-
-    </script>
+ </script>
 </body>
-
 </html>
