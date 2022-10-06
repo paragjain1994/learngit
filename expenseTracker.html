@@ -51,6 +51,7 @@
         var edt = document.getElementsByClassName("ed");
         document.addEventListener('click', removeItem);
 
+
         function saveData(event) {
             event.preventDefault();
 
@@ -101,34 +102,38 @@
         };
 
         function removeItem(event) {
+            if (event.target.classList.contains('del')) {
+                if (confirm('delete')) {
+                    var list_ = event.target.parentElement;
+                    var list_id = event.target.parentElement.id;
+                    UnList.removeChild(list_);
 
-            var list_ = event.target.parentElement;
-            var list_id = event.target.parentElement.id;
-            //console.log(id)
-            UnList.removeChild(list_);
-            if (event.target.classList.contains("del")) {
-                let unique_Id_array1 = Object.keys(localStorage);
-                if (unique_Id_array1.some((v) => { return v === list_id })) {
-                    confirm("delete expense details parmanently?");
-                    // console.log(localStorage)
-                    // localStorage.clear();
-                    for (var i = 0; i < unique_Id_array1.length; i++) {
-                        if (unique_Id_array1[i] === list_id)
-                            localStorage.removeItem(unique_Id_array1[i]);
+                    let unique_Id_array1 = Object.keys(localStorage);
+                    if (unique_Id_array1.some((v) => { return v === list_id })) {
+                        for (var i = 0; i < unique_Id_array1.length; i++) {
+                            if (unique_Id_array1[i] === list_id)
+                                localStorage.removeItem(unique_Id_array1[i]);
+
+                        }
+
                     }
                 }
+
             }
+
             else if (event.target.classList.contains("ed")) {
+                var list_ = event.target.parentElement;
+                var list_id = event.target.parentElement.id;
+                UnList.removeChild(list_);
+
                 let unique_Id_array1 = Object.keys(localStorage);
-
-                //console.log(unique_Id_array1);
                 if (unique_Id_array1.some((v) => { return v === list_id })) {
-                    confirm("Edit expense details?");
-
                     for (var i = 0; i < unique_Id_array1.length; i++) {
                         if (unique_Id_array1[i] === list_id)
                             localStorage.removeItem(unique_Id_array1[i]);
+
                     }
+
                 }
                 document.getElementById("amount").focus();
             }
