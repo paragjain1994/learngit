@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <section class="container">
+    <form id="my-form" action="#" onsubmit="saveData(event)">
+      <h1>Appointment Booking App</h1>
+      <div class="msg"></div>
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+      </div>
+
+      <input class="btn" type="submit" name="submit">
+    </form>
+    <div>
+      <ul id="ListOfUsers">
+
+      </ul>
+    </div>
+
+  </section>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js">// axios bridge for connecting front and back</script>
+  <script>
+
+    var UnList = document.getElementById('ListOfUsers');
+
+    var dltBtn = document.getElementsByClassName("del");
+
+    document.addEventListener('click', removeItem);
+
+    var edt = document.getElementsByClassName("ed");
+
+
+    axios
+      .get("https://crudcrud.com/api/5858277ea8c646c89eb0f3629f1bdbfc/bookingappointment")
+      .then((res) => {
+        for (var i = 0; i < res.data.length; i++) {
+          console.log(res.data[i])
+          showDetailsOnScreen(res.data[i]);
+        }
+      })
+      .catch(err => console.error(err));
+
+   
+
+
+    function saveData(event) {
+      event.preventDefault();
+
+      var obj = {};
+
+      obj.name = event.target.name.value;
+      obj.email = event.target.email.value;
+
+      axios.get("https://crudcrud.com/api/5858277ea8c646c89eb0f3629f1bdbfc/bookingappointment")
+        .then((response) => {
+          checkduplicacy(obj, response.data);
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    };
+
+    function checkduplicacy(obj, arrayOfObject) {
+      if (arrayOfObject.some((v) => { return v.email === obj.email })) {
+        alert(`EmailId  ${obj.email} already exist`);
+      }
+      else {
+        axios.post("https://crudcrud.com/api/5858277ea8c646c89eb0f3629f1bdbfc/bookingappointment", obj)
+          .then((response) => {
+            console.log(response.data);
+            showDetailsOnScreen(response.data)
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+
+      }
+    };
+
+      function showDetailsOnScreen(user) {
+
+      var parentNode = document.getElementById("ListOfUsers");
+      var Child_printDetails = `<li id="${user._id}">Name:- ${user.name} &nbsp;&nbsp; Email:- ${user.email} &nbsp;&nbsp; &nbsp;<button class="ed">Edit</button>&nbsp;<button class="del">Delete</button></li>`;
+      parentNode.innerHTML = parentNode.innerHTML + Child_printDetails;
+
+    };
+
+
+    function removeItem(event) {
+
+      if (event.target.classList.contains("del")) {
+        if (confirm("delete?")) {
+          var list_ = event.target.parentElement;
+          var _id = event.target.parentElement.id;
+          UnList.removeChild(list_);
+
+          axios.delete(`https://crudcrud.com/api/5858277ea8c646c89eb0f3629f1bdbfc/bookingappointment/${_id}`)
+          .then((res) => {
+            console.log(res.data)
+          })
+          .catch(err => console.error(err));
+        }
+       
+      }
+      else if (event.target.classList.contains("ed")) {
+        if (confirm("edit?")) {
+          var list_ = event.target.parentElement;
+          var _id = event.target.parentElement.id;
+
+          UnList.removeChild(list_);
+          document.getElementById("name").value = " ";
+          document.getElementById("email").value = " ";
+
+          axios.delete(`https://crudcrud.com/api/5858277ea8c646c89eb0f3629f1bdbfc/bookingappointment/${_id}`)
+          .then((res) => {
+            console.log(res.data)
+          })
+          .catch(err => console.error(err));
+        }
+
+        
+      }
+    };
+
+
+  </script>
+</body>
+
+</html>
